@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: rgb(54, 54, 54);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            vertical-align: middle;
+            /* justify-items: stretch; */
+        }
+
+        .container{
+            background-color: white;
+            margin-top: 10em;
+            height: 19em;
+            width: 18em;
+            
+            border-radius: 10%;
+            transition: all 0.25s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+        }
+        .container:hover{
+            margin-top: 9em;
+            height: 22em;
+            width: 20em;
+            /* border-radius: 10%; */
+            transition: all 0.25s;
+            box-shadow: 8px 10px black ;
+            cursor: grab;
+        }
+        .con-flag{
+            /* border: 1px solid black; */
+            height: 45%;
+            width: 75%;
+            margin-top: -20px;
+        }
+        .name{
+            /* border:1px solid black; */
+            height:5%;
+            width: fit-content;
+            font-size: larger;
+            margin-top: -0.15em;
+            font-weight: bolder;
+        }
+        .capital{
+            /* border:1px solid black; */
+            height:3%;
+            width: fit-content;
+            margin-top: -0.7em;
+        }
+        .con-detail{
+            display: flex;
+            /* border:1px solid black; */
+            width: 75%;
+            height: 3rem;
+            margin-top: 0.5em;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            /* flex-wrap: wrap; */
+            max-width: 80%;
+        }
+        .pop, .area, .continent{
+            padding: 10px 5px;
+            word-wrap:normal;
+            font-size: 80%;
+            max-width: 40%;
+        }
+        .image{
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+        }
+        select{
+            appearance: none;
+            outline: 0;
+            background:rgb(170, 128, 98);
+            margin-top: 2em;
+            /* background-image: none; */
+            width: 100%;
+            height: 100%;
+            color: black;
+            cursor: pointer;
+            border: 2px solid black;
+            border-radius: 10px;
+        }
+        .opt{
+            position: relative;
+            display: block;
+            width: 10em;
+            height: 2em;
+            line-height: 3;
+            overflow: hidden;
+            border-radius: 2px;
+            padding-bottom: 30px;
+        }
+        option{
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body> 
+    <div class="container"></div>
+    <div class="opt">
+        <select name="slct" id="countryData" onchange="showData()">
+            <option value="">Select one</option>
+            <option value="india">India</option>
+            <option value="nepal">Nepal</option>
+            <option value="usa">USA</option>
+            <option value="peru">Peru</option>
+            <option value="bhutan">Bhutan</option>
+            <option value="uk">UK</option>
+        </select>
+    </div>
+
+    <script>
+        const showData = () =>{
+            const container = document.querySelector('.container');
+        const countrydata = document.querySelector('#countryData').value;
+        const request = new XMLHttpRequest(); 
+        if(countrydata == "india")
+            request.open('GET', "https://restcountries.com/v3.1/name/india");
+        else if(countrydata == "nepal")
+            request.open('GET', "https://restcountries.com/v3.1/name/nepal");
+        else if(countrydata == "usa")
+            request.open('GET', "https://restcountries.com/v3.1/name/usa");
+        else if(countrydata == "peru")
+            request.open('GET', "https://restcountries.com/v3.1/name/peru");        
+        else if(countrydata == "bhutan")
+            request.open('GET', "https://restcountries.com/v3.1/name/bhutan");
+        else if(countrydata == "uk")
+            request.open('GET', "https://restcountries.com/v3.1/name/uk");
+        request.send();
+
+        request.addEventListener('load', function(){
+            const [data] = JSON.parse(this.response);
+            // console.log(data.name);
+            const htmlData = `
+                <div class="con-flag">
+                    <img src="${data.flags.png}" alt="No image to display" class="image">
+                </div>
+                <p class="name">${data.name.common}</p>
+                <p class="capital">Capital: ${data.capital}</p>
+                <hr style="width:99%;text-align:left;margin-left:0">
+                <div class="con-detail">
+                    <p class="pop">Population: ${data.population}</p>
+                    <p class="area">Area: ${data.area}</p>
+                </div>`;
+                // document.body.container.innerHTML = '';
+            // container.insertAdjacentHTML("afterbegin", );
+            container.innerHTML = "";
+            container.insertAdjacentHTML("afterbegin", htmlData);
+        })
+        }
+    </script>
+</body>
+</html>
